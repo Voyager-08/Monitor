@@ -1,0 +1,9 @@
+[submodule "3rdparty/asio"]
+	path = 3rdparty/asio
+	url = https://github.com/chriskohlhoff/asio.git
+[submodule "3rdparty/spdlog"]
+	path = 3rdparty/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "3rdparty/sqlite"]
+	path = 3rdparty/sqlite
+	url = https://github.com/azadkuh/sqlite-amalgamation.git

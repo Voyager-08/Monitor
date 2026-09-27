@@ -7,5 +7,10 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt6 REQUIRED COMPONENTS Widgets)
 
-add_executable(Monitor main.cpp)
-target_link_libraries(Monitor PRIVATE Qt6::Widgets)
+add_executable(Monitor
+        src/main.cpp
+)
+
+target_link_libraries(Monitor PRIVATE
+        Qt6::Widgets
+)
