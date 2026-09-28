@@ -1,6 +1,6 @@
-#include "pages/DashboardPage.h"
+#include "gui/pages/DashboardPage.h"
 
-#include "models/DashboardBackend.h"
+#include "gui/models/DashboardBackend.h"
 
 #include <QQuickWidget>
 #include <QQmlContext>

@@ -1,12 +1,12 @@
 #include "../../include/gui/MainWindow.h"
 
 #include "../../include/gui/CommonWidgets.h"
-#include "pages/DashboardPage.h"
-#include "pages/SerialPage.h"
-#include "pages/NetworkPage.h"
-#include "pages/ModbusPage.h"
-#include "pages/LogPage.h"
-#include "pages/SettingsPage.h"
+#include "gui/pages/DashboardPage.h"
+#include "gui/pages/SerialPage.h"
+#include "gui/pages/NetworkPage.h"
+#include "gui/pages/ModbusPage.h"
+#include "gui/pages/LogPage.h"
+#include "gui/pages/SettingsPage.h"
 
 #include <QWidget>
 #include <QHBoxLayout>

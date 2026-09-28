@@ -1,4 +1,4 @@
-#include "models/DashboardBackend.h"
+#include "gui/models/DashboardBackend.h"
 
 #include <QTimer>
 #include <QRandomGenerator>

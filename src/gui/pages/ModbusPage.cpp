@@ -1,6 +1,6 @@
-#include "pages/ModbusPage.h"
+#include "gui/pages/ModbusPage.h"
 
-#include "../../../include/gui/CommonWidgets.h"
+#include "../../include/gui/CommonWidgets.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
