@@ -1,4 +1,4 @@
-#include "gui/common/CommonWidgets.h"
+#include "../../include/gui/CommonWidgets.h"
 
 #include <QPainter>
 #include <QPainterPath>

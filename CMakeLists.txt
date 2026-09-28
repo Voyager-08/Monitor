@@ -11,7 +11,7 @@ find_package(Qt6 REQUIRED COMPONENTS Widgets Quick QuickWidgets)
 set(SOURCES
         src/main.cpp
         src/gui/MainWindow.cpp
-        src/gui/common/CommonWidgets.cpp
+        src/gui/CommonWidgets.cpp
         src/gui/models/DashboardBackend.cpp
         src/gui/pages/DashboardPage.cpp
         src/gui/pages/SerialPage.cpp
@@ -22,15 +22,15 @@ set(SOURCES
 )
 
 set(HEADERS
-        src/gui/MainWindow.h
-        src/gui/common/CommonWidgets.h
-        include/models/DashboardBackend.h
-        include/pages/DashboardPage.h
-        include/pages/SerialPage.h
-        include/pages/NetworkPage.h
-        include/pages/ModbusPage.h
-        include/pages/LogPage.h
-        include/pages/SettingsPage.h
+        include/gui/MainWindow.h
+        include/gui/CommonWidgets.h
+        include/gui/models/DashboardBackend.h
+        include/gui/pages/DashboardPage.h
+        include/gui/pages/SerialPage.h
+        include/gui/pages/NetworkPage.h
+        include/gui/pages/ModbusPage.h
+        include/gui/pages/LogPage.h
+        include/gui/pages/SettingsPage.h
 )
 
 set(RESOURCES
