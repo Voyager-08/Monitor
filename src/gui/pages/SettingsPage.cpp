@@ -1,6 +1,6 @@
-#include "pages/SettingsPage.h"
+#include "gui/pages/SettingsPage.h"
 
-#include "../../../include/gui/CommonWidgets.h"
+#include "gui/CommonWidgets.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

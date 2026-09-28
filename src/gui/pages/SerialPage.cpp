@@ -1,6 +1,6 @@
 #include "gui/pages/SerialPage.h"
 
-#include "../../include/gui/CommonWidgets.h"
+#include "gui/CommonWidgets.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

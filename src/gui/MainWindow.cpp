@@ -1,6 +1,6 @@
-#include "../../include/gui/MainWindow.h"
+#include "gui/MainWindow.h"
 
-#include "../../include/gui/CommonWidgets.h"
+#include "gui/CommonWidgets.h"
 #include "gui/pages/DashboardPage.h"
 #include "gui/pages/SerialPage.h"
 #include "gui/pages/NetworkPage.h"
