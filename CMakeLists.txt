@@ -6,29 +6,31 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Widgets Quick QuickWidgets)
 
 set(SOURCES
         src/main.cpp
         src/gui/MainWindow.cpp
-        src/gui/widgets/CommonWidgets.cpp
-        src/gui/widgets/DashboardPage.cpp
-        src/gui/widgets/SerialPage.cpp
-        src/gui/widgets/NetworkPage.cpp
-        src/gui/widgets/ModbusPage.cpp
-        src/gui/widgets/LogPage.cpp
-        src/gui/widgets/SettingsPage.cpp
+        src/gui/common/CommonWidgets.cpp
+        src/gui/models/DashboardBackend.cpp
+        src/gui/pages/DashboardPage.cpp
+        src/gui/pages/SerialPage.cpp
+        src/gui/pages/NetworkPage.cpp
+        src/gui/pages/ModbusPage.cpp
+        src/gui/pages/LogPage.cpp
+        src/gui/pages/SettingsPage.cpp
 )
 
 set(HEADERS
         src/gui/MainWindow.h
-        src/gui/widgets/CommonWidgets.h
-        src/gui/widgets/DashboardPage.h
-        src/gui/widgets/SerialPage.h
-        src/gui/widgets/NetworkPage.h
-        src/gui/widgets/ModbusPage.h
-        src/gui/widgets/LogPage.h
-        src/gui/widgets/SettingsPage.h
+        src/gui/common/CommonWidgets.h
+        include/models/DashboardBackend.h
+        include/pages/DashboardPage.h
+        include/pages/SerialPage.h
+        include/pages/NetworkPage.h
+        include/pages/ModbusPage.h
+        include/pages/LogPage.h
+        include/pages/SettingsPage.h
 )
 
 set(RESOURCES
@@ -42,6 +44,7 @@ add_executable(Monitor
 )
 
 target_include_directories(Monitor PRIVATE
+        ${CMAKE_SOURCE_DIR}/include
         ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/3rdparty/asio/include
         ${CMAKE_SOURCE_DIR}/3rdparty/spdlog/include
@@ -50,4 +53,6 @@ target_include_directories(Monitor PRIVATE
 
 target_link_libraries(Monitor PRIVATE
         Qt6::Widgets
+        Qt6::Quick
+        Qt6::QuickWidgets
 )

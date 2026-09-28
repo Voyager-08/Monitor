@@ -1,6 +1,6 @@
-#include "gui/widgets/NetworkPage.h"
+#include "pages/NetworkPage.h"
 
-#include "gui/widgets/CommonWidgets.h"
+#include "gui/common/CommonWidgets.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>

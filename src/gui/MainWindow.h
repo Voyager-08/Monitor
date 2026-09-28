@@ -3,7 +3,7 @@
 #include <QMainWindow>
 #include <QVector>
 
-#include "gui/widgets/CommonWidgets.h"
+#include "gui/common/CommonWidgets.h"
 
 class QStackedWidget;
 class QLabel;

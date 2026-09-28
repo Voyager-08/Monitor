@@ -1,12 +1,12 @@
 #include "gui/MainWindow.h"
 
-#include "gui/widgets/CommonWidgets.h"
-#include "gui/widgets/DashboardPage.h"
-#include "gui/widgets/SerialPage.h"
-#include "gui/widgets/NetworkPage.h"
-#include "gui/widgets/ModbusPage.h"
-#include "gui/widgets/LogPage.h"
-#include "gui/widgets/SettingsPage.h"
+#include "gui/common/CommonWidgets.h"
+#include "pages/DashboardPage.h"
+#include "pages/SerialPage.h"
+#include "pages/NetworkPage.h"
+#include "pages/ModbusPage.h"
+#include "pages/LogPage.h"
+#include "pages/SettingsPage.h"
 
 #include <QWidget>
 #include <QHBoxLayout>
@@ -62,11 +62,10 @@ MainWindow::MainWindow(QWidget *parent)
     statusBar->addPermanentWidget(new QLabel("Monitor v0.1.0", statusBar));
     setStatusBar(statusBar);
 
-    // clock
-    m_clockLabel = new QLabel(this);
-    m_clockLabel->setObjectName("ClockLabel");
+    // clock (m_clockLabel 已在 buildHeader() 中创建)
     auto updateClock = [this]() {
-        m_clockLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"));
+        if (m_clockLabel)
+            m_clockLabel->setText(QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"));
     };
     updateClock();
     auto *clockTimer = new QTimer(this);
@@ -180,7 +179,9 @@ QWidget *MainWindow::buildHeader()
     layout->addLayout(titleCol);
     layout->addStretch();
 
-    m_clockLabel->setParent(header);
+    // 时钟标签在 buildHeader() 中直接创建，解决 nullptr 问题
+    m_clockLabel = new QLabel(header);
+    m_clockLabel->setObjectName("ClockLabel");
     layout->addWidget(m_clockLabel);
 
     return header;

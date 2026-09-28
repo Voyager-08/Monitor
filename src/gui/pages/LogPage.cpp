@@ -1,6 +1,6 @@
-#include "gui/widgets/LogPage.h"
+#include "pages/LogPage.h"
 
-#include "gui/widgets/CommonWidgets.h"
+#include "gui/common/CommonWidgets.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
