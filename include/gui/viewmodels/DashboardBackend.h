@@ -53,7 +53,7 @@ signals:
     void seriesChanged();
 
 private:
-    void tick();
+    void update();
 
     QTimer *m_timer = nullptr;
     bool m_serverOnline = true;

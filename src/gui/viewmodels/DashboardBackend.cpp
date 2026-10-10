@@ -5,6 +5,7 @@
 #include <QtMath>
 
 namespace {
+    // 模拟数据变化
 double walk(double value, double step, double min, double max)
 {
     value += (QRandomGenerator::global()->generateDouble() - 0.5) * step;
@@ -23,7 +24,7 @@ DashboardBackend::DashboardBackend(QObject *parent)
 
     m_timer = new QTimer(this);
     m_timer->setInterval(1000);
-    connect(m_timer, &QTimer::timeout, this, &DashboardBackend::tick);
+    connect(m_timer, &QTimer::timeout, this, &DashboardBackend::update);
     m_timer->start();
 }
 
@@ -38,6 +39,7 @@ QString DashboardBackend::uptime() const
         .arg(s, 2, 10, QChar('0'));
 }
 
+// 确认报警
 void DashboardBackend::acknowledgeAlarm()
 {
     m_alarmLevel = 0;
@@ -45,8 +47,8 @@ void DashboardBackend::acknowledgeAlarm()
     emit dataChanged();
 }
 
-void DashboardBackend::tick()
-{
+// 模拟数据变
+void DashboardBackend::update() {
     m_uptimeSeconds++;
 
     m_cpu = int(walk(m_cpu, 22, 8, 96));
@@ -78,7 +80,6 @@ void DashboardBackend::tick()
     m_series.append(m_cpu);
     while (m_series.size() > 60)
         m_series.removeFirst();
-
-    emit dataChanged();
     emit seriesChanged();
+    emit dataChanged();
 }

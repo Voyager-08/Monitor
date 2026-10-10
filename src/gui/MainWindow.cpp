@@ -17,13 +17,17 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QStatusBar>
+#include <QCloseEvent>
+#include <QSettings>
+#include <QScreen>
+#include <QGuiApplication>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
     setWindowTitle("Monitor 监控上位机");
-    resize(1280, 800);
     setMinimumSize(1080, 680);
+    resize(1280, 800);
 
     m_stack = new QStackedWidget(this);
 
@@ -73,6 +77,33 @@ MainWindow::MainWindow(QWidget *parent)
     clockTimer->start(1000);
 
     setPage(0);
+
+    loadGeometry();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    saveGeometry();
+    event->accept();
+}
+
+void MainWindow::loadGeometry()
+{
+    QSettings settings;
+    const QByteArray geom = settings.value("geometry").toByteArray();
+    if (!geom.isEmpty() && QMainWindow::restoreGeometry(geom))
+        return;
+
+    const auto screen = QGuiApplication::primaryScreen();
+    const auto available = screen ? screen->availableGeometry() : QRect(0, 0, 1920, 1080);
+    const QSize sz = size();
+    move(available.center() - QPoint(sz.width() / 2, sz.height() / 2));
+}
+
+void MainWindow::saveGeometry() const
+{
+    QSettings settings;
+    settings.setValue("geometry", QMainWindow::saveGeometry());
 }
 
 QWidget *MainWindow::buildSidebar()

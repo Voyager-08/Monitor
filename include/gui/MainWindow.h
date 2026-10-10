@@ -14,11 +14,16 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     QWidget *buildSidebar();
     QWidget *buildHeader();
     void addNav(const QString &text, NavButton::IconKind kind, int pageIndex);
     void setPage(int index);
+    void loadGeometry();
+    void saveGeometry() const;
 
     QStackedWidget *m_stack = nullptr;
     QLabel *m_pageTitle = nullptr;
