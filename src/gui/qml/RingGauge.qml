@@ -52,20 +52,24 @@ Item {
         function onAnimValueChanged() { canvas.requestPaint() }
     }
 
-    Text {
+    Column {
         anchors.centerIn: parent
-        text: Math.round(gauge.animValue) + "%"
-        color: "#ffffff"
-        font.pixelSize: 20
-        font.bold: true
-    }
+        spacing: 2
 
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        text: gauge.title
-        color: "#8b90a0"
-        font.pixelSize: 12
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: gauge.title
+            color: "#8b90a0"
+            font.pixelSize: 12
+        }
+
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: Math.round(gauge.animValue) + "%"
+            color: "#ffffff"
+            font.pixelSize: 20
+            font.bold: true
+        }
     }
 
     onWidthChanged: canvas.requestPaint()

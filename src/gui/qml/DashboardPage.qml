@@ -5,37 +5,6 @@ Rectangle {
     id: root
     color: "#1b1c24"
 
-    ColumnLayout {
-        anchors.fill: parent
-        anchors.margins: 20
-        spacing: 16
-
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 150
-            spacing: 16
-
-            ServerStatusCard { Layout.fillWidth: true }
-            DeviceTile { Layout.preferredWidth: 250 }
-            AlarmCard { Layout.preferredWidth: 340 }
-        }
-
-        RowLayout {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 220
-            spacing: 16
-
-            ResourcesCard { Layout.preferredWidth: 440 }
-            TrafficCard { Layout.fillWidth: true }
-        }
-
-        RealTimeCard {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Layout.minimumHeight: 180
-        }
-    }
-
     // ================= 基础组件 =================
     component GlassCard: Rectangle {
         property color cardColor: "#20212b"
@@ -208,8 +177,9 @@ Rectangle {
         property color levelColor: dashboard.alarmLevel === 2 ? "#ef4444"
                                  : dashboard.alarmLevel === 1 ? "#f59e0b" : "#22c55e"
 
-        border.color: dashboard.alarmLevel > 0 ? alarmCard.levelColor : "#2a2c37"
-        Behavior on border.color { ColorAnimation { duration: 400 } }
+        property color _borderTarget: dashboard.alarmLevel > 0 ? alarmCard.levelColor : "#2a2c37"
+        border.color: _borderTarget
+        Behavior on _borderTarget { ColorAnimation { duration: 400 } }
 
         ColumnLayout {
             anchors.fill: parent
@@ -319,12 +289,11 @@ Rectangle {
         }
     }
 
-    // ================= CPU / 内存 / 磁盘 =================
+    // ================= 资源占用 =================
     component ResourcesCard: GlassCard {
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: 16
-            spacing: 8
+            spacing: 5
 
             Text {
                 text: "资源占用"
@@ -336,7 +305,8 @@ Rectangle {
             RowLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                spacing: 8
+                Layout.leftMargin: 10
+                spacing: 20
 
                 RingGauge {
                     Layout.fillWidth: true
@@ -506,4 +476,36 @@ Rectangle {
             }
         }
     }
+
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: 20
+        spacing: 16
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 150
+            spacing: 16
+
+            ServerStatusCard { Layout.fillWidth: true }
+            DeviceTile { Layout.preferredWidth: 250 }
+            AlarmCard { Layout.preferredWidth: 340 }
+        }
+
+        RowLayout {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 220
+            spacing: 16
+
+            ResourcesCard { Layout.preferredWidth: 440 }
+            TrafficCard { Layout.fillWidth: true }
+        }
+
+        RealTimeCard {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.minimumHeight: 180
+        }
+    }
+
 }
