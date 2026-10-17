@@ -29,6 +29,8 @@ target_sources(Monitor PRIVATE
     src/gui/pages/ModbusPage.cpp
     src/gui/pages/LogPage.cpp
     src/gui/pages/SettingsPage.cpp
+    src/transport/tcp/TcpClient.cpp
+    src/transport/tcp/TcpServer.cpp
 
     include/gui/MainWindow.h
     include/gui/CommonWidgets.h
@@ -39,6 +41,8 @@ target_sources(Monitor PRIVATE
     include/gui/pages/ModbusPage.h
     include/gui/pages/LogPage.h
     include/gui/pages/SettingsPage.h
+    include/transport/tcp/TcpClient.h
+    include/transport/tcp/TcpServer.h
 
     resources/resources.qrc
 )
