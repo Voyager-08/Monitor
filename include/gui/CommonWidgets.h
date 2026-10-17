@@ -9,6 +9,7 @@
 class QVBoxLayout;
 class QPainter;
 class QPaintEvent;
+class QTableWidget;
 
 class Card : public QFrame
 {
@@ -24,6 +25,21 @@ private:
     QLabel *m_title = nullptr;
     QLabel *m_subtitle = nullptr;
     QVBoxLayout *m_body = nullptr;
+};
+
+class DeviceListCard : public Card
+{
+    Q_OBJECT
+public:
+    explicit DeviceListCard(QWidget *parent = nullptr);
+
+    void connectDevice(const QString &type, const QString &info);
+    void disconnectDevice(const QString &type);
+
+private:
+    int rowForType(const QString &type) const;
+
+    QTableWidget *m_table = nullptr;
 };
 
 class StatCard : public QFrame

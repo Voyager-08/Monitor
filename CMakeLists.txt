@@ -22,6 +22,7 @@ target_sources(Monitor PRIVATE
     src/main.cpp
     src/gui/MainWindow.cpp
     src/gui/CommonWidgets.cpp
+    src/gui/Theme.cpp
     src/gui/viewmodels/DashboardBackend.cpp
     src/gui/pages/DashboardPage.cpp
     src/gui/pages/SerialPage.cpp
@@ -34,6 +35,7 @@ target_sources(Monitor PRIVATE
 
     include/gui/MainWindow.h
     include/gui/CommonWidgets.h
+    include/gui/Theme.h
     include/gui/viewmodels/DashboardBackend.h
     include/gui/pages/DashboardPage.h
     include/gui/pages/SerialPage.h

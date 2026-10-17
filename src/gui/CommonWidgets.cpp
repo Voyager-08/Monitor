@@ -7,6 +7,9 @@
 #include <QMouseEvent>
 #include <QLinearGradient>
 #include <QStyle>
+#include <QTableWidget>
+#include <QHeaderView>
+#include <QDateTime>
 
 // ---------------------------------------------------------------------------
 // Card
@@ -53,6 +56,72 @@ void Card::setSubtitle(const QString &subtitle)
 QVBoxLayout *Card::bodyLayout() const
 {
     return m_body;
+}
+
+// ---------------------------------------------------------------------------
+// DeviceListCard
+// ---------------------------------------------------------------------------
+DeviceListCard::DeviceListCard(QWidget *parent)
+    : Card(parent)
+{
+    setTitle("下位机连接");
+    setSubtitle("每连接一个下位机显示一行");
+
+    m_table = new QTableWidget(this);
+    m_table->setColumnCount(4);
+    m_table->setHorizontalHeaderLabels({"类型", "连接信息", "状态", "连接时间"});
+    m_table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    m_table->verticalHeader()->setVisible(false);
+    m_table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    m_table->setSelectionBehavior(QAbstractItemView::SelectRows);
+    m_table->setShowGrid(false);
+    m_table->setAlternatingRowColors(true);
+    m_table->setMinimumHeight(110);
+
+    bodyLayout()->addWidget(m_table);
+}
+
+int DeviceListCard::rowForType(const QString &type) const
+{
+    for (int i = 0; i < m_table->rowCount(); ++i) {
+        QTableWidgetItem *item = m_table->item(i, 0);
+        if (item && item->text() == type) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void DeviceListCard::connectDevice(const QString &type, const QString &info)
+{
+    int row = rowForType(type);
+    const bool isNew = row < 0;
+    if (isNew) {
+        row = m_table->rowCount();
+        m_table->insertRow(row);
+    }
+
+    QTableWidgetItem *infoItem = m_table->item(row, 1);
+    const QString oldInfo = infoItem ? infoItem->text() : QString();
+    const bool infoChanged = isNew || oldInfo != info;
+
+    m_table->setItem(row, 0, new QTableWidgetItem(type));
+    m_table->setItem(row, 1, new QTableWidgetItem(info));
+    m_table->setItem(row, 2, new QTableWidgetItem("已连接"));
+    m_table->item(row, 2)->setForeground(QColor("#22c55e"));
+
+    if (infoChanged) {
+        const QString ts = QDateTime::currentDateTime().toString("HH:mm:ss");
+        m_table->setItem(row, 3, new QTableWidgetItem(ts));
+    }
+}
+
+void DeviceListCard::disconnectDevice(const QString &type)
+{
+    const int row = rowForType(type);
+    if (row >= 0) {
+        m_table->removeRow(row);
+    }
 }
 
 // ---------------------------------------------------------------------------

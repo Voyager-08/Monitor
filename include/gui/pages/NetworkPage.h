@@ -6,6 +6,7 @@
 #include <QMap>
 
 class LedIndicator;
+class DeviceListCard;
 class QLabel;
 class QComboBox;
 class QLineEdit;
@@ -38,6 +39,7 @@ private:
     QPushButton *m_toggleBtn = nullptr;
     LedIndicator *m_led = nullptr;
     QLabel *m_statusLabel = nullptr;
+    DeviceListCard *m_devices = nullptr;
     QPlainTextEdit *m_log = nullptr;
     bool m_running = false;
     QString m_currentMode;

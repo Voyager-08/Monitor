@@ -1,6 +1,7 @@
 #include "gui/pages/SettingsPage.h"
 
 #include "gui/CommonWidgets.h"
+#include "gui/Theme.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
@@ -35,6 +36,8 @@ SettingsPage::SettingsPage(QWidget *parent)
     makeFormCard("外观", "界面与显示设置", appCard);
     auto *theme = new QComboBox;
     theme->addItems({"深色科技风", "浅色简洁风"});
+    theme->setCurrentText(currentThemeName());
+    m_theme = theme;
     auto *lang = new QComboBox;
     lang->addItems({"简体中文", "English"});
     auto *appForm = new QFormLayout;
@@ -100,4 +103,12 @@ SettingsPage::SettingsPage(QWidget *parent)
     aboutCard->bodyLayout()->addWidget(saveBtn, 0, Qt::AlignLeft);
 
     root->addWidget(aboutCard);
+
+    connect(m_theme, &QComboBox::currentIndexChanged, this, [this]() {
+        applyTheme(m_theme->currentText());
+    });
+
+    connect(saveBtn, &QPushButton::clicked, this, [this]() {
+        applyTheme(m_theme->currentText());
+    });
 }

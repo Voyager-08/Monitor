@@ -6,6 +6,7 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QFormLayout>
+#include <QSplitter>
 #include <QLabel>
 #include <QComboBox>
 #include <QPushButton>
@@ -109,7 +110,17 @@ SerialPage::SerialPage(QWidget *parent)
     ioCard->bodyLayout()->addLayout(toolRow);
 
     root->addWidget(settingsCard);
-    root->addWidget(ioCard, 1);
+
+    m_devices = new DeviceListCard(this);
+
+    auto *splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->setChildrenCollapsible(false);
+    splitter->addWidget(ioCard);
+    splitter->addWidget(m_devices);
+    splitter->setStretchFactor(0, 2);
+    splitter->setStretchFactor(1, 1);
+    splitter->setSizes({700, 400});
+    root->addWidget(splitter, 1);
 
     connect(m_openBtn, &QPushButton::clicked, this, [this]() {
         m_opened = !m_opened;
@@ -118,11 +129,19 @@ SerialPage::SerialPage(QWidget *parent)
             m_led->setColor(QColor("#22c55e"));
             m_statusLabel->setText(QString("已连接 · %1 @ %2")
                                        .arg(m_port->currentText(), m_baud->currentText()));
+            m_devices->connectDevice("串口",
+                                     QString("%1 @ %2 bps · %3%4%5")
+                                         .arg(m_port->currentText(), m_baud->currentText(),
+                                              m_dataBits->currentText(),
+                                              m_parity->currentIndex() == 0 ? "N"
+                                                                           : (m_parity->currentIndex() == 1 ? "O" : "E"),
+                                              m_stopBits->currentText()));
             appendLog("[系统] 串口打开成功");
         } else {
             m_openBtn->setText("打开串口");
             m_led->setColor(QColor("#8b90a0"));
             m_statusLabel->setText("未连接");
+            m_devices->disconnectDevice("串口");
             appendLog("[系统] 串口已关闭");
         }
     });

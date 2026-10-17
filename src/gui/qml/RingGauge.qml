@@ -6,7 +6,7 @@ Item {
     property string title: "CPU"
     property real value: 0
     property color accent: "#3b82f6"
-    property color trackColor: "#2a2c37"
+    property color trackColor: appTheme.cardBorder
 
     property real animValue: value
     Behavior on animValue {
@@ -59,14 +59,14 @@ Item {
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text: gauge.title
-            color: "#8b90a0"
+            color: appTheme.textMuted
             font.pixelSize: 12
         }
 
         Text {
             anchors.horizontalCenter: parent.horizontalCenter
             text: Math.round(gauge.animValue) + "%"
-            color: "#ffffff"
+            color: appTheme.textStrong
             font.pixelSize: 20
             font.bold: true
         }
@@ -75,5 +75,6 @@ Item {
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
     onAccentChanged: canvas.requestPaint()
+    onTrackColorChanged: canvas.requestPaint()
     Component.onCompleted: canvas.requestPaint()
 }

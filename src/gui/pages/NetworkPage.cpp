@@ -4,6 +4,7 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QSplitter>
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
@@ -60,7 +61,7 @@ NetworkPage::NetworkPage(QWidget *parent)
 
     root->addWidget(configCard);
 
-    // ---- log ----
+    // ---- log + devices ----
     auto *logCard = new Card(this);
     logCard->setTitle("通信日志");
     logCard->setSubtitle("实时收发记录");
@@ -69,7 +70,16 @@ NetworkPage::NetworkPage(QWidget *parent)
     m_log->setPlaceholderText("连接建立后，收发日志将显示在这里…");
     logCard->bodyLayout()->addWidget(m_log);
 
-    root->addWidget(logCard, 1);
+    m_devices = new DeviceListCard(this);
+
+    auto *splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->setChildrenCollapsible(false);
+    splitter->addWidget(logCard);
+    splitter->addWidget(m_devices);
+    splitter->setStretchFactor(0, 3);
+    splitter->setStretchFactor(1, 2);
+    splitter->setSizes({700, 440});
+    root->addWidget(splitter, 1);
 
     connect(m_mode, &QComboBox::currentIndexChanged, this, [this]() {
         saveState();
@@ -95,6 +105,9 @@ NetworkPage::NetworkPage(QWidget *parent)
             m_toggleBtn->setText(runningText());
             m_led->setColor(QColor("#22c55e"));
             m_statusLabel->setText("已连接");
+            m_devices->connectDevice("网络 (TCP)",
+                                     QString("%1:%2").arg(m_ip->text(),
+                                                          QString::number(m_port->value())));
             m_log->appendPlainText(QString("[%1] [系统] 已连接到 %2:%3")
                                        .arg(ts, m_ip->text(),
                                             QString::number(m_port->value())));
@@ -102,6 +115,7 @@ NetworkPage::NetworkPage(QWidget *parent)
             m_toggleBtn->setText(idleText());
             m_led->setColor(QColor("#8b90a0"));
             m_statusLabel->setText("未连接");
+            m_devices->disconnectDevice("网络 (TCP)");
             m_log->appendPlainText(QString("[%1] [系统] 连接已断开").arg(ts));
         }
     });

@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class LedIndicator;
+class DeviceListCard;
 class QLabel;
 class QComboBox;
 class QPushButton;
@@ -26,6 +27,7 @@ private:
     QPushButton *m_openBtn = nullptr;
     LedIndicator *m_led = nullptr;
     QLabel *m_statusLabel = nullptr;
+    DeviceListCard *m_devices = nullptr;
     QPlainTextEdit *m_recv = nullptr;
     QPlainTextEdit *m_send = nullptr;
     QCheckBox *m_hexRecv = nullptr;

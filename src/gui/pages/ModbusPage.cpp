@@ -4,6 +4,7 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QSplitter>
 #include <QFormLayout>
 #include <QLabel>
 #include <QComboBox>
@@ -90,7 +91,17 @@ ModbusPage::ModbusPage(QWidget *parent)
     regCard->bodyLayout()->addWidget(m_regs);
 
     root->addWidget(configCard);
-    root->addWidget(regCard, 1);
+
+    m_devices = new DeviceListCard(this);
+
+    auto *splitter = new QSplitter(Qt::Horizontal, this);
+    splitter->setChildrenCollapsible(false);
+    splitter->addWidget(regCard);
+    splitter->addWidget(m_devices);
+    splitter->setStretchFactor(0, 3);
+    splitter->setStretchFactor(1, 2);
+    splitter->setSizes({700, 440});
+    root->addWidget(splitter, 1);
 
     connect(m_readBtn, &QPushButton::clicked, this, &ModbusPage::pollOnce);
     connect(m_autoPoll, &QCheckBox::toggled, this, [this](bool on) {
@@ -114,6 +125,14 @@ void ModbusPage::pollOnce()
     const int count = m_count->value();
     const int start = m_start->value();
     const QString ts = QDateTime::currentDateTime().toString("HH:mm:ss");
+    const QString transport = m_transport->currentText();
+
+    m_devices->disconnectDevice(transport == "Modbus RTU" ? "Modbus TCP" : "Modbus RTU");
+    m_devices->connectDevice(transport,
+                             QString("从站 %1 · 起始地址 %2 · %3 个寄存器")
+                                 .arg(m_slave->value())
+                                 .arg(start)
+                                 .arg(count));
 
     m_regs->setRowCount(count);
     for (int i = 0; i < count; ++i) {

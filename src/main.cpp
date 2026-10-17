@@ -1,8 +1,9 @@
 #include <QApplication>
 #include <QStyle>
-#include <QFile>
+#include <QIcon>
 
 #include "gui/MainWindow.h"
+#include "gui/Theme.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,9 +13,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("Monitor");
     QApplication::setWindowIcon(QIcon(":/icons/windowIcon.png"));
 
-    QFile styleFile(":/qss/style.qss");
-    if (styleFile.open(QIODevice::ReadOnly | QIODevice::Text))
-        app.setStyleSheet(QString::fromUtf8(styleFile.readAll()));
+    applyTheme(currentThemeName());
 
     MainWindow window;
     window.show();

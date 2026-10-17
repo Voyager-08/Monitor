@@ -13,4 +13,7 @@ class SettingsPage : public QWidget
     Q_OBJECT
 public:
     explicit SettingsPage(QWidget *parent = nullptr);
+
+private:
+    QComboBox *m_theme = nullptr;
 };

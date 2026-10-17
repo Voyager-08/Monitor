@@ -5,7 +5,7 @@ Item {
 
     property var points: []
     property color accent: "#3b82f6"
-    property color gridColor: "#2e303c"
+    property color gridColor: appTheme.chartGrid
 
     onPointsChanged: canvas.requestPaint()
 
@@ -29,7 +29,7 @@ Item {
             ctx.strokeStyle = chart.gridColor
             ctx.lineWidth = 1
             ctx.font = "10px sans-serif"
-            ctx.fillStyle = "#6b7280"
+            ctx.fillStyle = appTheme.textDim
             ctx.textBaseline = "middle"
             for (var i = 0; i <= 4; ++i) {
                 var y = padT + plotH * i / 4
@@ -88,5 +88,6 @@ Item {
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
     onAccentChanged: canvas.requestPaint()
+    onGridColorChanged: canvas.requestPaint()
     Component.onCompleted: canvas.requestPaint()
 }

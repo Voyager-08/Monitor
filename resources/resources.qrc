@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file alias="qss/style.qss">qss/style.qss</file>
+        <file alias="qss/style_light.qss">qss/style_light.qss</file>
         <file alias="qml/DashboardPage.qml">../src/gui/qml/DashboardPage.qml</file>
         <file alias="qml/RingGauge.qml">../src/gui/qml/RingGauge.qml</file>
         <file alias="qml/RealTimeChart.qml">../src/gui/qml/RealTimeChart.qml</file>

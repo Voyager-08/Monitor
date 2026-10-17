@@ -3,6 +3,7 @@
 #include <QWidget>
 
 class QComboBox;
+class DeviceListCard;
 class QSpinBox;
 class QCheckBox;
 class QPushButton;
@@ -27,6 +28,7 @@ private:
     QCheckBox *m_autoPoll = nullptr;
     QPushButton *m_readBtn = nullptr;
     QTableWidget *m_regs = nullptr;
+    DeviceListCard *m_devices = nullptr;
     QLabel *m_statusLabel = nullptr;
     QTimer *m_timer = nullptr;
 };

@@ -3,12 +3,12 @@ import QtQuick.Layouts
 
 Rectangle {
     id: root
-    color: "#1b1c24"
+    color: appTheme.bg
 
     // ================= 基础组件 =================
     component GlassCard: Rectangle {
-        property color cardColor: "#20212b"
-        property color cardBorder: "#2a2c37"
+        property color cardColor: appTheme.card
+        property color cardBorder: appTheme.cardBorder
         radius: 10
         color: cardColor
         border.width: 1
@@ -58,7 +58,7 @@ Rectangle {
                     width: 48
                     height: 48
                     radius: 24
-                    color: dashboard.serverOnline ? "#14351f" : "#3a1c1c"
+                    color: dashboard.serverOnline ? appTheme.successBg : appTheme.dangerBg
                 }
                 PulseDot {
                     anchors.centerIn: parent
@@ -74,13 +74,13 @@ Rectangle {
                     spacing: 8
                     Text {
                         text: "服务器状态"
-                        color: "#f1f2f6"
+                        color: appTheme.textStrong
                         font.pixelSize: 15
                         font.bold: true
                     }
                     Rectangle {
                         radius: 4
-                        color: dashboard.serverOnline ? "#14351f" : "#3a1c1c"
+                        color: dashboard.serverOnline ? appTheme.successBg : appTheme.dangerBg
                         implicitWidth: chip.implicitWidth + 16
                         implicitHeight: 20
                         Text {
@@ -95,7 +95,7 @@ Rectangle {
 
                 Text {
                     text: dashboard.serverName + " · " + dashboard.version
-                    color: "#8b90a0"
+                    color: appTheme.textMuted
                     font.pixelSize: 12
                 }
 
@@ -105,19 +105,19 @@ Rectangle {
                     spacing: 32
                     ColumnLayout {
                         spacing: 1
-                        Text { text: "运行时长"; color: "#8b90a0"; font.pixelSize: 11 }
+                        Text { text: "运行时长"; color: appTheme.textMuted; font.pixelSize: 11 }
                         Text {
                             text: dashboard.uptime
-                            color: "#e6e8ee"; font.pixelSize: 16; font.bold: true
+                            color: appTheme.text; font.pixelSize: 16; font.bold: true
                             font.family: "Consolas"
                         }
                     }
                     ColumnLayout {
                         spacing: 1
-                        Text { text: "在线设备"; color: "#8b90a0"; font.pixelSize: 11 }
+                        Text { text: "在线设备"; color: appTheme.textMuted; font.pixelSize: 11 }
                         Text {
                             text: dashboard.onlineDevices + " / " + dashboard.totalDevices
-                            color: "#e6e8ee"; font.pixelSize: 16; font.bold: true
+                            color: appTheme.text; font.pixelSize: 16; font.bold: true
                         }
                     }
                 }
@@ -132,19 +132,19 @@ Rectangle {
             anchors.margins: 18
             spacing: 8
 
-            Text { text: "在线设备数量"; color: "#8b90a0"; font.pixelSize: 12 }
+            Text { text: "在线设备数量"; color: appTheme.textMuted; font.pixelSize: 12 }
 
             RowLayout {
                 spacing: 6
                 Text {
                     text: dashboard.onlineDevices
-                    color: "#ffffff"
+                    color: appTheme.textStrong
                     font.pixelSize: 36
                     font.bold: true
                 }
                 Text {
                     text: "/ " + dashboard.totalDevices
-                    color: "#6b7280"
+                    color: appTheme.textDim
                     font.pixelSize: 14
                     Layout.alignment: Qt.AlignBottom
                     Layout.bottomMargin: 8
@@ -163,7 +163,7 @@ Rectangle {
                         width: 14
                         height: 14
                         radius: 3
-                        color: modelData ? "#22c55e" : "#3a3d49"
+                        color: modelData ? "#22c55e" : appTheme.track
                         Behavior on color { ColorAnimation { duration: 300 } }
                     }
                 }
@@ -177,7 +177,7 @@ Rectangle {
         property color levelColor: dashboard.alarmLevel === 2 ? "#ef4444"
                                  : dashboard.alarmLevel === 1 ? "#f59e0b" : "#22c55e"
 
-        property color _borderTarget: dashboard.alarmLevel > 0 ? alarmCard.levelColor : "#2a2c37"
+        property color _borderTarget: dashboard.alarmLevel > 0 ? alarmCard.levelColor : appTheme.cardBorder
         border.color: _borderTarget
         Behavior on _borderTarget { ColorAnimation { duration: 400 } }
 
@@ -191,7 +191,7 @@ Rectangle {
                 spacing: 8
                 Text {
                     text: "报警状态"
-                    color: "#f1f2f6"
+                    color: appTheme.textStrong
                     font.pixelSize: 15
                     font.bold: true
                 }
@@ -199,7 +199,7 @@ Rectangle {
                 Rectangle {
                     visible: dashboard.alarmCount > 0
                     radius: 9
-                    color: "#3a1c1c"
+                    color: appTheme.dangerBg
                     implicitWidth: 28
                     implicitHeight: 18
                     Text {
@@ -250,7 +250,7 @@ Rectangle {
                     Text {
                         Layout.fillWidth: true
                         text: dashboard.alarmText
-                        color: "#8b90a0"
+                        color: appTheme.textMuted
                         font.pixelSize: 11
                         wrapMode: Text.WordWrap
                         maximumLineCount: 2
@@ -297,7 +297,7 @@ Rectangle {
 
             Text {
                 text: "资源占用"
-                color: "#f1f2f6"
+                color: appTheme.textStrong
                 font.pixelSize: 14
                 font.bold: true
             }
@@ -344,7 +344,7 @@ Rectangle {
                 Layout.fillWidth: true
                 Text {
                     text: "网络流量"
-                    color: "#f1f2f6"
+                    color: appTheme.textStrong
                     font.pixelSize: 14
                     font.bold: true
                 }
@@ -357,7 +357,7 @@ Rectangle {
                         anchors.fill: parent
                         anchors.margins: -4
                         radius: 4
-                        color: "#14351f"
+                        color: appTheme.successBg
                         z: -1
                     }
                 }
@@ -368,7 +368,7 @@ Rectangle {
                 spacing: 4
                 RowLayout {
                     Layout.fillWidth: true
-                    Text { text: "↑ 上行"; color: "#8b90a0"; font.pixelSize: 12 }
+                    Text { text: "↑ 上行"; color: appTheme.textMuted; font.pixelSize: 12 }
                     Item { Layout.fillWidth: true }
                     Text {
                         text: dashboard.netUp.toFixed(1) + " KB/s"
@@ -381,7 +381,7 @@ Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: 8
                     radius: 4
-                    color: "#2a2c37"
+                    color: appTheme.cardBorder
                     Rectangle {
                         height: parent.height
                         radius: 4
@@ -397,7 +397,7 @@ Rectangle {
                 spacing: 4
                 RowLayout {
                     Layout.fillWidth: true
-                    Text { text: "↓ 下行"; color: "#8b90a0"; font.pixelSize: 12 }
+                    Text { text: "↓ 下行"; color: appTheme.textMuted; font.pixelSize: 12 }
                     Item { Layout.fillWidth: true }
                     Text {
                         text: dashboard.netDown.toFixed(1) + " KB/s"
@@ -410,7 +410,7 @@ Rectangle {
                     Layout.fillWidth: true
                     implicitHeight: 8
                     radius: 4
-                    color: "#2a2c37"
+                    color: appTheme.cardBorder
                     Rectangle {
                         height: parent.height
                         radius: 4
@@ -459,13 +459,13 @@ Rectangle {
                 spacing: 8
                 Text {
                     text: "实时曲线"
-                    color: "#f1f2f6"
+                    color: appTheme.textStrong
                     font.pixelSize: 14
                     font.bold: true
                 }
                 Item { Layout.fillWidth: true }
                 Rectangle { width: 10; height: 10; radius: 5; color: "#3b82f6" }
-                Text { text: "CPU 使用率 (%)"; color: "#8b90a0"; font.pixelSize: 11 }
+                Text { text: "CPU 使用率 (%)"; color: appTheme.textMuted; font.pixelSize: 11 }
             }
 
             RealTimeChart {

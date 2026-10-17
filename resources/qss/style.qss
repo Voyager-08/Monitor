@@ -73,11 +73,10 @@ QLabel#PageSubtitle {
 }
 
 QLabel#ClockLabel {
-    font-size: 12px;
+    font-size: 14px;
     color: #6b7280;
-    padding: 6px 12px;
+    padding: 6px 0px;  /* 上下6px，左右0px */
     background-color: #242630;
-    border-radius: 6px;
 }
 
 /* ============ 卡片 ============ */
@@ -213,6 +212,14 @@ QPushButton#GhostButton {
 QPushButton#GhostButton:hover {
     background-color: #2a2c37;
     color: #e6e8ee;
+}
+
+QPushButton#GhostButton:pressed {
+    background-color: #23242e;
+    border-top-color: #15161c;
+    border-left-color: #15161c;
+    border-right-color: #3d4150;
+    border-bottom-color: #3d4150;
 }
 
 /* ============ 输入控件 ============ */
