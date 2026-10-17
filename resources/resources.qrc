@@ -4,5 +4,6 @@
         <file alias="qml/DashboardPage.qml">../src/gui/qml/DashboardPage.qml</file>
         <file alias="qml/RingGauge.qml">../src/gui/qml/RingGauge.qml</file>
         <file alias="qml/RealTimeChart.qml">../src/gui/qml/RealTimeChart.qml</file>
+        <file alias="icons/windowIcon.png">icons/windowIcon.png</file>
     </qresource>
 </RCC>

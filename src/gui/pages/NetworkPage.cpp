@@ -4,14 +4,11 @@
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
-#include <QFormLayout>
 #include <QLabel>
 #include <QComboBox>
 #include <QLineEdit>
 #include <QSpinBox>
 #include <QPushButton>
-#include <QTableWidget>
-#include <QHeaderView>
 #include <QPlainTextEdit>
 #include <QDateTime>
 
@@ -28,16 +25,16 @@ NetworkPage::NetworkPage(QWidget *parent)
     configCard->setSubtitle("TCP / UDP 通信参数");
 
     m_mode = new QComboBox;
-    m_mode->addItems({"TCP 服务端", "TCP 客户端", "UDP"});
+    m_mode->addItems({"TCP", "UDP"});
     m_ip = new QLineEdit("127.0.0.1");
     m_port = new QSpinBox;
     m_port->setRange(1, 65535);
     m_port->setValue(5000);
 
-    m_toggleBtn = new QPushButton("启动服务", this);
+    m_toggleBtn = new QPushButton("连接", this);
     m_toggleBtn->setObjectName("PrimaryButton");
     m_led = new LedIndicator(this);
-    m_statusLabel = new QLabel("未启动", this);
+    m_statusLabel = new QLabel("未连接", this);
     m_statusLabel->setObjectName("StatusText");
 
     auto *cfgRow = new QHBoxLayout;
@@ -52,7 +49,7 @@ NetworkPage::NetworkPage(QWidget *parent)
         cfgRow->addLayout(h);
     };
     addField("模式", m_mode);
-    addField("地址", m_ip);
+    addField("IP地址", m_ip);
     addField("端口", m_port);
     cfgRow->addSpacing(8);
     cfgRow->addWidget(m_led);
@@ -63,24 +60,7 @@ NetworkPage::NetworkPage(QWidget *parent)
 
     root->addWidget(configCard);
 
-    // ---- clients + log ----
-    auto *midRow = new QHBoxLayout;
-    midRow->setSpacing(16);
-
-    auto *clientsCard = new Card(this);
-    clientsCard->setTitle("客户端列表");
-    clientsCard->setSubtitle("当前在线连接");
-    m_clients = new QTableWidget(this);
-    m_clients->setColumnCount(5);
-    m_clients->setHorizontalHeaderLabels({"ID", "地址", "端口", "连接时间", "状态"});
-    m_clients->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    m_clients->verticalHeader()->setVisible(false);
-    m_clients->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    m_clients->setSelectionBehavior(QAbstractItemView::SelectRows);
-    m_clients->setShowGrid(false);
-    m_clients->setAlternatingRowColors(true);
-    clientsCard->bodyLayout()->addWidget(m_clients);
-
+    // ---- log ----
     auto *logCard = new Card(this);
     logCard->setTitle("通信日志");
     logCard->setSubtitle("实时收发记录");
@@ -89,41 +69,72 @@ NetworkPage::NetworkPage(QWidget *parent)
     m_log->setPlaceholderText("连接建立后，收发日志将显示在这里…");
     logCard->bodyLayout()->addWidget(m_log);
 
-    midRow->addWidget(clientsCard, 3);
-    midRow->addWidget(logCard, 2);
-    root->addLayout(midRow, 1);
+    root->addWidget(logCard, 1);
+
+    connect(m_mode, &QComboBox::currentIndexChanged, this, [this]() {
+        saveState();
+        m_currentMode = m_mode->currentText();
+        applyState();
+    });
 
     connect(m_toggleBtn, &QPushButton::clicked, this, [this]() {
-        m_running = !m_running;
         const QString ts = QDateTime::currentDateTime().toString("HH:mm:ss");
-        if (m_running) {
-            m_toggleBtn->setText("停止服务");
-            m_led->setColor(QColor("#22c55e"));
-            m_statusLabel->setText(QString("运行中 · %1").arg(m_mode->currentText()));
-            m_log->appendPlainText(QString("[%1] [系统] %2 已启动 @ %3:%4")
-                                       .arg(ts, m_mode->currentText(),
-                                            m_ip->text(),
-                                            QString::number(m_port->value())));
+        const QString mode = m_mode->currentText();
 
-            m_clients->setRowCount(2);
-            m_clients->setItem(0, 0, new QTableWidgetItem("1001"));
-            m_clients->setItem(0, 1, new QTableWidgetItem("192.168.1.20"));
-            m_clients->setItem(0, 2, new QTableWidgetItem("50824"));
-            m_clients->setItem(0, 3, new QTableWidgetItem(ts));
-            m_clients->setItem(0, 4, new QTableWidgetItem("在线"));
-            m_clients->setItem(1, 0, new QTableWidgetItem("1002"));
-            m_clients->setItem(1, 1, new QTableWidgetItem("192.168.1.33"));
-            m_clients->setItem(1, 2, new QTableWidgetItem("51002"));
-            m_clients->setItem(1, 3, new QTableWidgetItem(ts));
-            m_clients->setItem(1, 4, new QTableWidgetItem("在线"));
-            m_clients->item(0, 4)->setForeground(QColor("#22c55e"));
-            m_clients->item(1, 4)->setForeground(QColor("#22c55e"));
+        if (mode == "UDP") {
+            m_led->setColor(QColor("#f59e0b"));
+            m_statusLabel->setText("测试中");
+            m_log->appendPlainText(QString("[%1] [UDP] 测试连接 %2:%3 …")
+                                       .arg(ts, m_ip->text(),
+                                            QString::number(m_port->value())));
+            return;
+        }
+
+        m_running = !m_running;
+        if (m_running) {
+            m_toggleBtn->setText(runningText());
+            m_led->setColor(QColor("#22c55e"));
+            m_statusLabel->setText("已连接");
+            m_log->appendPlainText(QString("[%1] [系统] 已连接到 %2:%3")
+                                       .arg(ts, m_ip->text(),
+                                            QString::number(m_port->value())));
         } else {
-            m_toggleBtn->setText("启动服务");
+            m_toggleBtn->setText(idleText());
             m_led->setColor(QColor("#8b90a0"));
-            m_statusLabel->setText("未启动");
-            m_log->appendPlainText(QString("[%1] [系统] 服务已停止").arg(ts));
-            m_clients->setRowCount(0);
+            m_statusLabel->setText("未连接");
+            m_log->appendPlainText(QString("[%1] [系统] 连接已断开").arg(ts));
         }
     });
+
+    m_currentMode = m_mode->currentText();
+    for (const QString &m : {QString("TCP"), QString("UDP")}) {
+        m_states.insert(m, ModeState{});
+    }
+}
+
+QString NetworkPage::idleText() const
+{
+    return m_mode->currentText() == "TCP" ? "连接" : "测试连接";
+}
+
+QString NetworkPage::runningText() const
+{
+    return "断开";
+}
+
+void NetworkPage::saveState()
+{
+    ModeState &s = m_states[m_currentMode];
+    s.running = m_running;
+    s.status = m_statusLabel->text();
+    s.led = m_led->color();
+}
+
+void NetworkPage::applyState()
+{
+    const ModeState s = m_states.value(m_currentMode);
+    m_running = s.running;
+    m_led->setColor(s.led);
+    m_statusLabel->setText(s.status);
+    m_toggleBtn->setText(m_running ? runningText() : idleText());
 }
